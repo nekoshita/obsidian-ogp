@@ -64,7 +64,7 @@ export default class ObsidianAutoCardLink extends Plugin {
 
     const codeBlockGenerator = new CodeBlockGenerator(editor);
 
-    for (const line of selectedText.split(/[\n ]/)) {
+    for (const line of selectedText.split("\n")) {
       if (CheckIf.isUrl(line)) {
         codeBlockGenerator.convertUrlToCodeBlock(line);
       } else if (CheckIf.isLinkedUrl(line)) {
