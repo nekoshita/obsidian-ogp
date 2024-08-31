@@ -156,9 +156,8 @@ export class CodeBlockProcessor {
   }
 
   private getLocalImagePath(link: string): string {
-    link = link.slice(2, -2); // remove [[]]
     const imageRelativePath = this.app.metadataCache.getFirstLinkpathDest(
-      getLinkpath(link),
+      getLinkpath(link.slice(2, -2)), // remove [[]]
       ""
     )?.path;
 
