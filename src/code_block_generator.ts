@@ -4,6 +4,8 @@ import { LinkMetadata } from "src/interfaces";
 import { EditorExtensions } from "src/editor_enhancements";
 import { LinkMetadataParser } from "src/link_metadata_parser";
 
+import * as iconv from 'iconv-lite';
+
 export class CodeBlockGenerator {
   editor: Editor;
 
@@ -76,7 +78,14 @@ export class CodeBlockGenerator {
       return;
     }
 
-    const parser = new LinkMetadataParser(url, res.text);
+    const contentType = this.getCharset(res.headers["content-type"]);
+    const charset = contentType.match(/charset=([\w-]+)/i)?.at(1);
+
+    let text = res.text;
+    if (charset)
+      text = iconv.decode(Buffer.from(res.arrayBuffer), charset)
+
+    const parser = new LinkMetadataParser(url, text);
     return parser.parse();
   }
 
